@@ -25,25 +25,16 @@ public class SeleccionarOpcion implements Task {
     @Override
     public <T extends Actor> void performAs(T actor){
         switch (opcion){
-            case "Agradecimientos":
-                actor.attemptsTo(WaitUntil.the(MainPage.AGRADECIMIENTOS, isVisible()));
-                actor.attemptsTo(
-                        Click.on(MainPage.AGRADECIMIENTOS)
-                );
-            break;
+            case "CarroCompras": {
 
-            case "Anchetas":
-                actor.attemptsTo(WaitUntil.the(MainPage.ANCHETAS, isVisible()));
-                actor.attemptsTo(
-                        Click.on(MainPage.ANCHETAS)
+                actor.attemptsTo(WaitUntil.the(MainPage.CARRITOCOMPRAS, isVisible()));
+                actor.attemptsTo(Click.on(MainPage.CARRITOCOMPRAS)
                 );
                 break;
-
-            case "Carro": {
-                actor.attemptsTo(WaitUntil.the(MainPage.CARRO, isVisible()));
-                actor.attemptsTo(
-                        Click.on(MainPage.CARRO)
-                );
+            }
+            case "ConfirmarCompra": {
+                actor.attemptsTo(WaitUntil.the(MainPage.CHECKOUTCARRITO, isVisible()));
+                actor.attemptsTo(Click.on(MainPage.CHECKOUTCARRITO));
                 break;
             }
         }

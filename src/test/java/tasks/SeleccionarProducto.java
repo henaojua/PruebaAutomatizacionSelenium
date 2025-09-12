@@ -4,9 +4,8 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.actions.*;
-import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.waits.WaitUntil;
-import userinterfaces.AgradecimientosPage;
+import userinterfaces.MainPage;
 
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 
@@ -27,28 +26,18 @@ public class SeleccionarProducto implements Task {
     public <T extends Actor> void performAs(T actor) {
 
         switch (this.producto){
-            case "MDF 00015":
-                actor.attemptsTo(WaitUntil.the(AgradecimientosPage.AREAPRODUCTO1, isVisible()));
-                actor.attemptsTo(MoveMouse.to(AgradecimientosPage.AREAPRODUCTO1));
-
-
-                actor.attemptsTo(WaitUntil.the(AgradecimientosPage.AÑADIRALCARRITOPRO1, isVisible()));
-                actor.attemptsTo(Click.on(AgradecimientosPage.AÑADIRALCARRITOPRO1)
+            case "MacBook":
+                actor.attemptsTo(WaitUntil.the(MainPage.MACBOOK, isVisible()));
+                actor.attemptsTo(Click.on(MainPage.MACBOOK)
                 );
 
                 break;
 
-            case "MDF 00029":
-                actor.attemptsTo(WaitUntil.the(AgradecimientosPage.AREAPRODUCTO2, isVisible()));
-                actor.attemptsTo(MoveMouse.to(AgradecimientosPage.AREAPRODUCTO2));
-
-                actor.attemptsTo(WaitUntil.the(AgradecimientosPage.AÑADIRALCARRITOPRO2, WebElementStateMatchers.isCurrentlyEnabled()));
-                actor.attemptsTo(Click.on(AgradecimientosPage.AÑADIRALCARRITOPRO2));
+            case "iPhone":
+                actor.attemptsTo(WaitUntil.the(MainPage.IPHONE, isVisible()));
+                actor.attemptsTo(Click.on(MainPage.IPHONE));
 
                 break;
-
-
-
         }
 
     }

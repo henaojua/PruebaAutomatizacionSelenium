@@ -7,17 +7,12 @@ import io.cucumber.java.en.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Open;
-import net.serenitybdd.screenplay.questions.Text;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import net.thucydides.core.annotations.Managed;
 import org.openqa.selenium.WebDriver;
+import tasks.RealizarStep;
 import tasks.SeleccionarOpcion;
 import tasks.SeleccionarProducto;
-import userinterfaces.MainPage;
-import userinterfaces.VistaCarro;
-import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
-import static org.hamcrest.Matchers.equalTo;
+
 
 
 
@@ -36,37 +31,50 @@ public class Caso1 {
     }
 
 
-    @Given("El usuario ingresa a la pagina")
-    public void elUsuarioIngresa(){
+    @Given("que el usuario tiene productos en el carrito")
+    public void elUsuarioAgregaProductos(){
         usuario.attemptsTo(
-                Open.url("https://www.floristeriamundoflor.com/")
+                Open.url("https://opencart.abstracta.us/")
         );
+        usuario.attemptsTo(SeleccionarProducto.llamado("MacBook"));
+        usuario.attemptsTo(SeleccionarProducto.llamado("iPhone"));
     }
 
-    @When("Se dirige a la opcion Agradecimientos")
-    public void elUsuarioNavegaAgradecimientos(){
+    @And("navega a la página de checkout")
+    public void elUsuarioNavegaCheckout(){
 
-        usuario.attemptsTo(SeleccionarOpcion.deseada("Agradecimientos"));
-    }
-
-    @And("Agrega dos productos al carrito")
-    public void elUsuarioAgregaProducto(){
-
-        usuario.attemptsTo(SeleccionarProducto.llamado("MDF 00015"));
-        usuario.attemptsTo(SeleccionarProducto.llamado("MDF 00029"));
-
-
-
+        usuario.attemptsTo(SeleccionarOpcion.deseada("CarroCompras"));
+        usuario.attemptsTo(SeleccionarOpcion.deseada("ConfirmarCompra"));
     }
 
 
-    @Then("Se observa en la opcion Carro los productos agregados")
-    public void elUsuarioValidaLosProductos(){
-        usuario.attemptsTo(SeleccionarOpcion.deseada("Carro"));
-        usuario.attemptsTo(WaitUntil.the(VistaCarro.PRODUCTO1, isVisible()));
-        usuario.should(seeThat("producto MDF 00015", Text.of(VistaCarro.PRODUCTO1), equalTo("MDF 00015")));
-        usuario.attemptsTo(WaitUntil.the(VistaCarro.PRODUCTO2, isVisible()));
-        usuario.should(seeThat("producto MDF 00029", Text.of(VistaCarro.PRODUCTO2), equalTo("MDF 00029")));
+    @When("selecciona \"Checkout como Invitado\"")
+    public void elUsuarioRealizaCheckout(){
+        usuario.attemptsTo(RealizarStep.indicado("Step 1"));
+
+    }
+
+    @And("completa el formulario de envío con información válida")
+    public void elUsuarioLlenaFormulario(){
+        usuario.attemptsTo(RealizarStep.indicado("Step 2"));
+        usuario.attemptsTo(RealizarStep.indicado("Step 4"));
+    }
+
+    @And("selecciona el método de pago \"Cash on Delivery\"")
+    public void elUsuarioSeleccionaMetodoPago(){
+        usuario.attemptsTo(RealizarStep.indicado("Step 5"));
+    }
+
+    @And ("confirma el pedido")
+    public void elUsuarioConfirmaPedido(){
+        usuario.attemptsTo(RealizarStep.indicado("Step 6"));
+
+    }
+
+    @Then ("debe verse la página de confirmación con el mensaje \"Your order has been placed!\"")
+    public void elUsuarioVeElMensaje(){
+        usuario.attemptsTo(RealizarStep.indicado("Confirmacion"));
+
     }
 
 

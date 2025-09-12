@@ -1,7 +1,10 @@
-Feature: Agregar productos
+Feature: Finalizar compra como Guest Checkout
 
-Scenario: Agregar dos productos al carrito de compras
-  Given El usuario ingresa a la pagina
-  When Se dirige a la opcion Agradecimientos
-  And Agrega dos productos al carrito
-  Then Se observa en la opcion Carro los productos agregados
+Scenario: Usuario invitado completa una compra exitosa
+  Given que el usuario tiene productos en el carrito
+  And navega a la página de checkout
+  When selecciona "Checkout como Invitado"
+  And completa el formulario de envío con información válida
+  And selecciona el método de pago "Cash on Delivery"
+  And confirma el pedido
+  Then debe verse la página de confirmación con el mensaje "Your order has been placed!"
