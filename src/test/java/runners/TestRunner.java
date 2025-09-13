@@ -2,7 +2,9 @@ package runners;
 
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 
 @RunWith(CucumberWithSerenity.class)
@@ -22,4 +24,10 @@ import org.junit.runner.RunWith;
 )
 
 public class TestRunner {
+
+        @BeforeClass
+        public static void setup() {
+                WebDriverManager.chromedriver().setup();
+        }
 }
+
