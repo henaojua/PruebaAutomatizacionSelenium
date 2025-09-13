@@ -1,0 +1,5 @@
+Conclusiones TXT
+
+1. Durante las pruebas las funcionalidades correspondientes a Agregar producto y completar información de los pedidos fueron exitosas
+2. El mensaje de confirmación Your order has been placed! no aparece en el final, en vez de ello aparece Checkout por lo que la prueba falla, sin embargo, para efectos de que se visualice que el flujo sea exitoso con la palabra Checkout en el código actualmente se deja la validación con Checkout, sin embargo se puede cambiar por el mensaje Your order has been placed!” en la linea 113: seeThat(Text.of(ConfirmacionPage.MENSAJECONFIRMACION), containsString("Aquí cambiar"))del archivo Task/RealizarStep y verificar que al poner dicho mensaje la prueba falla. 
+3. Se encuentra un flaky test interactuando con el botón del carrito de compras y dentro de ese contenedor dar click al botón Checkout, por lo que interactua con el botón Checkout de la Navbar para solventar el flaky test.
