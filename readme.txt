@@ -137,9 +137,12 @@ webdriver {
           element = 10000
         }
       }
+
+
   driver = chrome
+  autodownload = true
   wait.for.timeout = 20000
-  webdriver.chrome.driver = "C:/webdrivers/chromedriver-win64/chromedriver.exe"
+
   capabilities {
     browserName = "chrome"
     "goog:chromeOptions" {
@@ -158,8 +161,6 @@ webdriver {
     }
   }
 }
-
-
 
 
 chrome {
@@ -194,9 +195,13 @@ environments {
   }
 }
 
-
 Ejecución del proyecto:
 
 Dirigirse al archivo TestRunner -> Click derecho -> Run 'Test Runner'
+
+IMPORTANTE:
+
+Se configuró el proyecto para que descargue automaticamente el web driver que se ajuste a la version de CHROME que se tiene en el pc que se está ejecutando, en el pc donde se desarrolló se usó la versión "Starting ChromeDriver 139.0.7258.154". Remitirse a esta ruta para verificar cual es el web driver que le aplique a su maquina https://developer.chrome.com/docs/chromedriver/downloads?hl=es-419 en caso de presentar alguna inconsistencia.
+
 
 
