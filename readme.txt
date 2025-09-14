@@ -42,166 +42,76 @@ src/
         ├── features/      
         └── serenity.conf  
 
-## 📋 Para el build.gradle se manejan las siguientes dependencias y configuraciones: 
 
-buildscript {
-    ext.serenityCoreVersion = '3.3.0'
+## 📋 Para el settings.gradle se manejan las siguientes dependencias y configuraciones: 
+
+pluginManagement {
     repositories {
+        maven { url "https://plugins.gradle.org/m2" }  // Portal de plugins
         mavenCentral()
     }
-    dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:$serenityCoreVersion")
-        classpath "net.serenity-bdd:serenity-single-page-report:$serenityCoreVersion"
-    }
 }
+
+rootProject.name = 'PruebaAutomatizacion'
+
+## 📋 Para el build.gradle se manejan las siguientes dependencias y configuraciones: 
+
 plugins {
-    id "net.serenity-bdd.serenity-gradle-plugin" version "${serenityCoreVersion}"
-    id 'java'
-    id 'eclipse'
-    id 'idea'
+    id "net.serenity-bdd.serenity-gradle-plugin" version "4.2.34"
+    id "java"
 }
 
-defaultTasks 'clean','test','aggregate'
-apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
-
-group 'co.com.screenplay.project'
-version '1.0-SNAPSHOT'
-
-compileJava.options.encoding = "UTF-8"
-compileTestJava.options.encoding = "UTF-8"
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 ext {
-    slf4jVersion = '1.7.7'
-    serenityCoreVersion = '3.3.4'
-    serenityCucumberVersion = '3.3.4'
-    junitVersion = '5.8.2'
-    assertJVersion = '3.22.0'
-    logbackVersion = '1.2.10'
-    lombokVersion = '1.18.22'
-    log4jVersion = '2.17.1'
+    serenityVersion = "4.2.34"
 }
 
 dependencies {
-    testImplementation ("net.serenity-bdd:serenity-core:${serenityCoreVersion}"){
-        exclude group: 'org.apache.groovy', module: 'groovy'
-    }
-    implementation "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}"
-    implementation "net.serenity-bdd:serenity-junit5:${serenityCoreVersion}"
-    implementation "net.serenity-bdd:serenity-cucumber:${serenityCucumberVersion}"
-    implementation "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}"
-    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}"
-    implementation "net.serenity-bdd:serenity-screenplay-rest:${serenityCoreVersion}"
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.3'
+    // JUnit 4 (ojo: NO serenity-junit5)
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
 
-    implementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    implementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-    implementation "org.assertj:assertj-core:${assertJVersion}"
-    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
-
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
-
-}
-test {
-    useJUnitPlatform()
-    testLogging.showStandardStreams = true
-    systemProperties System.getProperties()
+    testImplementation "net.serenity-bdd:serenity-screenplay:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
 }
 
-serenity {
-    testRoot = "co.com.screenplay.project.runners"
-    requirementsBaseDir = "src/test/resources/features"
-    reports = ["single-page-html"]
-}
-
-gradle.startParameter.continueOnFailure = true
-test.finalizedBy(aggregate)
+// Quita useJUnitPlatform(); usa el runner JUnit4
+test { useJUnit() }
 
 
 ## 📋 Para el Serenity.conf se manejan las siguientes configuraciones: 
 
 webdriver {
-    wait {
-        for {
-          timeouts = 15000
-          element = 10000
-        }
-      }
-
-
   driver = chrome
-  autodownload = true
   wait.for.timeout = 20000
-
   capabilities {
-    browserName = "chrome"
     "goog:chromeOptions" {
-      args = [
-        "start-maximized",
-        "--remote-allow-origins=*",
-        "--no-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-infobars",
-        "--disable-notifications",
-        "--disable-extensions",
-        "--lang=es",
-        "incognito"
-      ]
-      excludeSwitches = ["enable-automation"]  # Oculta la notificación de automatización
+      args = ["start-maximized", "--no-sandbox", "--disable-dev-shm-usage", "--lang=es"]
     }
   }
 }
-
-
-chrome {
-  preferences {
-    download.default_directory = "${user.dir}/downloads"
-    profile.default_content_settings.popups = 0
-    credentials_enable_service = false
-  }
-}
-
-
-headless.mode = false
-chrome.headless.args = [
-  "headless",
-  "window-size=1920,1080",
-  "--disable-gpu"
-]
-
 
 serenity {
   take.screenshots = FOR_FAILURES
   logging = VERBOSE
   restart.browser.for.each = scenario
-
 }
 
-
-environments {
-  default {
-
-    screen.resolution = "1920x1080"
-  }
-}
 
 Ejecución del proyecto:
 
 Dirigirse al archivo TestRunner -> Click derecho -> Run 'Test Runner'
 
+Visualizacion del reporte:
+
+Dirigirse a la carpeta target -> cucumber-reports -> cucumber.html -> Elegir el navegador para ver el reporte
+
 IMPORTANTE:
 
-Se configuró el proyecto para que descargue automaticamente el web driver que se ajuste a la version de CHROME que se tiene en el pc que se está ejecutando, en el pc donde se desarrolló se usó la versión "Starting ChromeDriver 139.0.7258.154". Remitirse a esta ruta para verificar cual es el web driver que le aplique a su maquina https://developer.chrome.com/docs/chromedriver/downloads?hl=es-419 en caso de presentar alguna inconsistencia.
+Si en la primera ejecucion el navegador se cierra muy rapido, por favor ejecutarlo nuevamente.
+
 
 
 
