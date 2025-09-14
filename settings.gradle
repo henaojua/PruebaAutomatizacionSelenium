@@ -1,2 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2" }  // Portal de plugins
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'PruebaAutomatizacion'
+
 
